@@ -1,0 +1,31 @@
+body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+    margin: 20px;
+}
+
+ol, ul {
+    padding-left: 20px;
+}
+
+.app-area {
+    max-width: 235px;
+    margin: 0 auto;
+}
+
+.title,
+.input-bar-area {
+    text-align: center;
+}
+
+.input-bar-area input {
+    height: 20px;
+}
+
+.input-bar-area button {
+    border-radius: 4px;
+    margin-left: 8px;
+    background-color: #ce4949;
+    border: none;
+    color: white;
+    height: 25px;
+}
