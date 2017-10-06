@@ -21,25 +21,33 @@ let data = [
 ];
 
 
-let counter = 1;
-
-
 class InputBar extends React.Component {
     constructor() {
         super();
         this.handelClick = this.handelClick.bind(this);
+        this.handelChange = this.handelChange.bind(this);
+
+        this.state = {
+            taskName: ""
+        }
+
+    }
+
+    handelChange(e) {
+        this.setState({
+            taskName: e.target.value
+        })
     }
 
     handelClick(e) {
-        let taskName = document.getElementById("inputName").value;
-        this.props.onAddNewTask(taskName);
+        this.props.onAddNewTask(e.target.value);
     }
 
     render() {
         return (
             <div className="input-bar-area">
-                <input id="inputName" type="text"/>
-                <button onClick={this.handelClick}>Create</button>
+                <input onChange={this.handelChange} id="inputName" type="text"/>
+                <button onClick={this.handelClick} value={this.state.taskName}>Create</button>
             </div>
         )
     }
@@ -74,13 +82,18 @@ class MaintainableTaskArea extends React.Component {
         }
     }
 
-    handleNewTask() {
+    handleNewTask(name) {
+        let updTasks = this.state.tasks.slice(),
+            id = updTasks.length + 1;
+
+        updTasks.push({
+            id: id,
+            name: name,
+            done: false
+        });
+
         this.setState({
-            tasks: data.push({
-                id: 4,
-                name: "Do something",
-                done: false
-            })
+            tasks: updTasks
         })
     }
 
