@@ -40,6 +40,9 @@ class InputBar extends React.Component {
     }
 
     handelClick(e) {
+        let el = document.getElementById("inputName");
+        el.value = "";
+
         this.props.onAddNewTask(e.target.value);
     }
 
@@ -53,11 +56,49 @@ class InputBar extends React.Component {
     }
 }
 
+class TaskListItem extends React.Component {
+
+    constructor(props) {
+        super();
+        this.handelBtnOnClick = this.handelBtnOnClick.bind(this);
+    }
+
+
+    handelBtnOnClick(e) {
+        this.props.onAddDeleteTask(this.props.id);
+    }
+
+// <input type="checkbox"/>
+    
+    render() {
+        return (
+            <li className="listItem" key={this.props.id}>
+                <span>
+                    {this.props.name}
+                </span>
+                <span className="listBehavior">
+                    <button onClick={this.handelBtnOnClick}>&#128473;</button>
+                </span>
+            </li>
+        )
+    }
+}
+
+
 class TasksList extends React.Component {
+
+    constructor() {
+        super();
+        this.handelItemDelete = this.handelItemDelete.bind(this);
+    }
+
+    handelItemDelete(id) {
+        this.props.onDeleteTaskArray(id);
+    }
 
     initListItem(tasks) {
         return tasks.map((item) =>
-            <li key={item.id}>{item.name}</li>
+            <TaskListItem onAddDeleteTask={this.handelItemDelete} name={item.name} id={item.id}/>
         );
     }
 
@@ -76,6 +117,7 @@ class MaintainableTaskArea extends React.Component {
     constructor() {
         super();
         this.handleNewTask = this.handleNewTask.bind(this);
+        this.handelDeletetask = this.handelDeletetask.bind(this);
 
         this.state = {
             tasks: data
@@ -97,11 +139,28 @@ class MaintainableTaskArea extends React.Component {
         })
     }
 
+    handelDeletetask(id) {
+        let tasksArray = this.state.tasks.slice();
+        let index = 0;
+
+        tasksArray.forEach((item, i) => {
+            if (item.id === id) {
+                index = i;
+            }
+        });
+
+        tasksArray.splice(index, 1);
+
+        this.setState({
+            tasks: tasksArray
+        })
+    }
+
     render() {
         return (
             <div className="table-area">
                 <InputBar onAddNewTask={this.handleNewTask}/>
-                <TasksList value={this.state.tasks}/>
+                <TasksList onDeleteTaskArray={this.handelDeletetask} value={this.state.tasks}/>
             </div>
         )
     }
